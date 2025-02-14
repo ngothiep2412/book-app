@@ -1,13 +1,10 @@
 package com.plcoding.bookpedia
 
 import androidx.compose.runtime.*
-import com.plcoding.bookpedia.book.data.network.KtorRemoteBookDataSource
-import com.plcoding.bookpedia.book.data.repository.DefaultRepository
 import com.plcoding.bookpedia.book.presentation.booklist.BookListScreenRoot
 import com.plcoding.bookpedia.book.presentation.booklist.BookListViewModel
-import com.plcoding.bookpedia.core.data.HttpClientFactory
-import io.ktor.client.engine.*
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 🧐
@@ -17,18 +14,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App(engine: HttpClientEngine) {
+fun App() {
+    val viewModel = koinViewModel<BookListViewModel>()
     BookListScreenRoot(
-
-        viewModel = remember {  BookListViewModel(
-            bookRepository = DefaultRepository(
-                remoteBookDataSource = KtorRemoteBookDataSource(
-                    httpClient = HttpClientFactory.create(
-                        engine = engine
-                    )
-                )
-            )
-        ) },
+        viewModel = viewModel,
         onBookClick =  {}
     )
 }
