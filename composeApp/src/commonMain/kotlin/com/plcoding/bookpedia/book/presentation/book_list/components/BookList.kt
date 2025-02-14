@@ -1,4 +1,4 @@
-package com.plcoding.bookpedia.book.presentation.booklist.components
+package com.plcoding.bookpedia.book.presentation.book_list.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

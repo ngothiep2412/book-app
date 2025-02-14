@@ -1,4 +1,4 @@
-package com.plcoding.bookpedia.book.presentation.booklist
+package com.plcoding.bookpedia.book.presentation.book_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
