@@ -30,30 +30,30 @@ private fun BookSearchBarPreview() {
     }
 }
 
-private val books = (1.. 100).map {
-    Book(
-        id = it.toString(),
-        title = "Book $it",
-        imageUrl = "https://test.com",
-        authors = listOf("Thiep"),
-        description = "Description: $it",
-        languages = emptyList(),
-        firstPublishYear = null,
-        averageRating = 4.5,
-        ratingCount = 4,
-        numPages = 100,
-        numEditions = 3,
+//private val books = (1.. 100).map {
+//    Book(
+//        id = it.toString(),
+//        title = "Book $it",
+//        imageUrl = "https://test.com",
+//        authors = listOf("Thiep"),
+//        description = "Description: $it",
+//        languages = emptyList(),
+//        firstPublishYear = null,
+//        averageRating = 4.5,
+//        ratingCount = 4,
+//        numPages = 100,
+//        numEditions = 3,
+//
+//    )
+//}
 
-    )
-}
-
-@Preview
-@Composable
-private fun BookListScreenPreview() {
-    BookListScreen(
-        state = BookListState(
-            searchResult = books,
-        ),
-        onAction = {}
-    )
-}
+//@Preview
+//@Composable
+//private fun BookListScreenPreview() {
+//    BookListScreen(
+//        state = BookListState(
+//            searchResult = books,
+//        ),
+//        onAction = {}
+//    )
+//}

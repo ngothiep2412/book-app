@@ -71,7 +71,7 @@ fun BookListScreen(
     val searchResultListState = rememberLazyListState()
     val favoriteListState = rememberLazyListState()
 
-    LaunchedEffect(state.searchResult) {
+    LaunchedEffect(state.searchResults) {
         searchResultListState.animateScrollToItem(0)
     }
 
@@ -81,23 +81,6 @@ fun BookListScreen(
 
     LaunchedEffect(paperState.currentPage) {
         onAction(BookListAction.OnTabSelected(paperState.currentPage))
-    }
-
-    val books = (1.. 100).map {
-        Book(
-            id = it.toString(),
-            title = "Book $it",
-            imageUrl = "https://test.com",
-            authors = listOf("Thiep"),
-            description = "Description: $it",
-            languages = emptyList(),
-            firstPublishYear = null,
-            averageRating = 4.5,
-            ratingCount = 4,
-            numPages = 100,
-            numEditions = 3,
-
-            )
     }
 
     Column(
@@ -213,7 +196,7 @@ fun BookListScreen(
                                                 color = MaterialTheme.colorScheme.error,
                                             )
                                         }
-                                       books.isEmpty() -> {
+                                       state.searchResults.isEmpty() -> {
                                             Text(
                                                 text = stringResource(Res.string.no_search_results),
                                                 textAlign = TextAlign.Center,
@@ -223,7 +206,7 @@ fun BookListScreen(
                                         }
                                         else -> {
                                             BookList(
-                                                books = books,
+                                                books = state.searchResults,
                                                 onBookClick = {
                                                     onAction(BookListAction.OnBookClick(it))
                                                 },
@@ -238,13 +221,13 @@ fun BookListScreen(
                             1 -> {
                                 if (state.errorMessage != null) {
                                     Text(
-                                        text = stringResource(Res.string.no_favorite),
+                                        text = stringResource(Res.string.no_favorite_books),
                                         textAlign = TextAlign.Center,
                                         style = MaterialTheme.typography.headlineSmall,
                                     )
                                 } else {
                                     BookList(
-                                        books = state.searchResult,
+                                        books = state.searchResults,
                                         onBookClick = {
                                             onAction(BookListAction.OnBookClick(it))
                                         },
