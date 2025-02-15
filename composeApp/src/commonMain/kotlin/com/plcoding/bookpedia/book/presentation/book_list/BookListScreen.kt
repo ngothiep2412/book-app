@@ -8,9 +8,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,11 +67,18 @@ fun BookListScreen(
 
     val paperState = rememberPagerState { 2 }
 
-    val searchResultListState = rememberLazyListState()
+    val searchResultsListState = rememberLazyListState()
     val favoriteListState = rememberLazyListState()
 
+    val searchResultListScrollPosition = rememberSaveable{ mutableStateOf(0) }
+    val favoriteBookListScrollPosition = rememberSaveable{ mutableStateOf(0) }
+
     LaunchedEffect(state.searchResults) {
-        searchResultListState.animateScrollToItem(0)
+        searchResultsListState.animateScrollToItem(searchResultListScrollPosition.value)
+    }
+
+    LaunchedEffect(searchResultsListState.firstVisibleItemIndex) {
+        searchResultListScrollPosition.value = searchResultsListState.firstVisibleItemIndex
     }
 
     LaunchedEffect(state.selectedTabIndex) {
@@ -211,7 +217,7 @@ fun BookListScreen(
                                                     onAction(BookListAction.OnBookClick(it))
                                                 },
                                                 modifier = Modifier.fillMaxSize(),
-                                                scrollState = searchResultListState,
+                                                scrollState = searchResultsListState,
                                             )
                                         }
                                     }
