@@ -168,16 +168,6 @@ private fun BookDetailScreen(
                     CircularProgressIndicator(
                         color = SandYellow
                     )
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .weight(1f),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        CircularProgressIndicator(
-//                            color = SandYellow
-//                        )
-//                    }
                 }
 
                 Text(
