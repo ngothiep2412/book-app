@@ -1,9 +1,12 @@
 package com.plcoding.bookpedia.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.plcoding.bookpedia.book.data.database.DatabaseFactory
+import com.plcoding.bookpedia.book.data.database.FavoriteBookDatabase
 import com.plcoding.bookpedia.book.data.network.KtorRemoteBookDataSource
 import com.plcoding.bookpedia.book.data.network.RemoteBookDataSource
 import com.plcoding.bookpedia.book.presentation.book_list.BookListViewModel
-import com.plcoding.bookpedia.book.data.repository.DefaultRepository
+import com.plcoding.bookpedia.book.data.repository.DefaultBookRepository
 import com.plcoding.bookpedia.book.domain.BookRepository
 import com.plcoding.bookpedia.book.presentation.SelectedBookViewModel
 import com.plcoding.bookpedia.book.presentation.book_detail.BookDetailViewModel
@@ -31,7 +34,16 @@ val sharedModule = module {
 //        KtorRemoteBookDataSource(get())
 //    }
     singleOf(::KtorRemoteBookDataSource).bind<RemoteBookDataSource>()
-    singleOf(::DefaultRepository).bind<BookRepository>()
+    singleOf(::DefaultBookRepository).bind<BookRepository>()
+
+    //  Room không hỗ trợ trực tiếp trên iOS, nên cần dùng SQLite driver.
+    single {
+       get<DatabaseFactory>().create()
+           .setDriver(BundledSQLiteDriver())
+           .build()
+    }
+
+    single { get<FavoriteBookDatabase>().favoriteBooksDao }
 
     viewModelOf(::BookListViewModel)
     viewModelOf(::BookDetailViewModel)
