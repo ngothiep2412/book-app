@@ -27,7 +27,6 @@ expect val platformModule: Module
 val sharedModule = module {
     single {HttpClientFactory.create(get())}
 
-    // Cách viết khác
 //    single {
 //        KtorRemoteBookDataSource(get())
 //    }
