@@ -15,19 +15,31 @@ class BookDetailViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state = MutableStateFlow(BookDetailState())
-    val state = _state.onStart {
-        fetchBookDescription()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        _state
-    )
+    val state = _state
+        .onStart {
+            fetchBookDescription()
+            observeFavoriteStatus()
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            _state.value
+        )
 
     private val bookId = savedStateHandle.toRoute<Route.BookDetail>().id
 
     fun onAction(action: BookDetailAction) {
         when (action) {
-            BookDetailAction.OnFavoriteClick -> {}
+            BookDetailAction.OnFavoriteClick -> {
+                viewModelScope.launch {
+                    if (state.value.isFavorite) {
+                        bookRepository.deleteFromFavorites(bookId)
+                    } else {
+                        state.value.book?.let { book ->
+                            bookRepository.markAsFavorite(book)
+                        }
+                    }
+                }
+            }
             is BookDetailAction.OnSelectedBookChange -> {
                 _state.update {
                     it.copy(
@@ -37,6 +49,18 @@ class BookDetailViewModel(
             }
             else -> Unit
         }
+    }
+
+    private fun observeFavoriteStatus() {
+        bookRepository
+            .isBookFavorite(bookId)
+            .onEach { isFavorite ->
+                _state.update {
+                    it.copy(
+                        isFavorite = isFavorite
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
     private fun fetchBookDescription() {

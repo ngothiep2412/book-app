@@ -14,7 +14,6 @@ object BookWorkDtoSerializer: KSerializer<BookWorkDto> {
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor(BookWorkDto::class.simpleName!!) {
             element<String?>("description")
-            element<String?>("title")
         }
 
     // Dùng để chuyển JSON thành BookWorkDto.
